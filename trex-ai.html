@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080a0d">
+<meta name="description" content="T-REX AI — Personal AI Hub">
+<title>T-REX AI | تیرکس AI</title>
+<style>
+:root{
+  --bg:#07090c; --panel:rgba(18,21,26,.72); --panel2:rgba(25,29,36,.82);
+  --text:#f4f6f8; --muted:#9aa3ae; --line:rgba(255,255,255,.10);
+  --accent:#4dff88; --accent2:#24d96b; --danger:#ff5f6d;
+  --shadow:0 24px 80px rgba(0,0,0,.42); --radius:24px;
+}
+[data-theme="light"]{
+  --bg:#eef1f5; --panel:rgba(255,255,255,.78); --panel2:rgba(255,255,255,.92);
+  --text:#101318; --muted:#59636f; --line:rgba(0,0,0,.10);
+  --accent:#16a34a; --accent2:#0d8a3c; --shadow:0 24px 80px rgba(30,40,50,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:var(--bg);color:var(--text)}
+body{overflow-x:hidden}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.app{min-height:100vh;position:relative;overflow:hidden}
+.bg{
+  position:fixed;inset:0;z-index:-3;
+  background:
+   radial-gradient(circle at 20% 10%,rgba(77,255,136,.10),transparent 26%),
+   radial-gradient(circle at 80% 70%,rgba(80,120,255,.08),transparent 30%),
+   var(--bg);
+}
+.grid{
+  position:fixed;inset:0;z-index:-2;opacity:.22;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 82%);
+}
+.glow{position:fixed;width:360px;height:360px;border-radius:50%;filter:blur(80px);background:var(--accent);opacity:.055;z-index:-1;pointer-events:none}
+.g1{top:-120px;right:-100px}.g2{bottom:-140px;left:-120px}
+
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:68px;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;padding:0 22px;
+  background:color-mix(in srgb,var(--bg) 74%,transparent);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line)
+}
+.brand-mini{display:flex;align-items:center;gap:10px;font-weight:800}
+.logo{
+ width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+ background:#050608;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 30px rgba(77,255,136,.10);
+ position:relative;overflow:hidden;flex:none
+}
+.logo:after{
+ content:"";width:23px;height:18px;background:#fff;display:block;
+ clip-path:polygon(5% 72%,24% 22%,42% 48%,62% 8%,100% 52%,81% 62%,69% 94%,43% 75%,23% 100%);
+}
+.brand-name{line-height:1.05}.brand-name b{display:block}.brand-name small{color:var(--muted);font-weight:600}
+.icon-btn{
+ border:1px solid var(--line);background:var(--panel);color:var(--text);width:42px;height:42px;border-radius:14px;
+ display:grid;place-items:center;backdrop-filter:blur(12px);transition:.2s
+}
+.icon-btn:hover{transform:translateY(-2px);border-color:rgba(77,255,136,.38)}
+.top-actions{display:flex;align-items:center;gap:8px}
+
+.view{min-height:100vh;padding:92px 22px 34px}
+.center{max-width:1120px;margin:auto}
+
+/* Auth / Welcome */
+.hero{min-height:calc(100vh - 126px);display:grid;place-items:center}
+.hero-card{width:min(920px,100%);text-align:center;padding:40px 22px}
+.big-logo{width:110px;height:110px;margin:0 auto 22px;border-radius:50%;transform:scale(.92);animation:floatLogo 4s ease-in-out infinite}
+.big-logo:after{width:57px;height:45px}
+@keyframes floatLogo{50%{transform:scale(1) translateY(-7px);box-shadow:0 0 60px rgba(77,255,136,.16)}}
+.title{font-size:clamp(42px,8vw,86px);letter-spacing:-.055em;margin:0;font-weight:950}
+.subtitle{font-size:clamp(17px,3vw,25px);color:var(--muted);margin:10px 0 30px}
+.auth-box{width:min(430px,100%);margin:0 auto;padding:20px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(20px);border-radius:28px;box-shadow:var(--shadow)}
+.field{display:grid;gap:7px;text-align:right;margin:11px 0}.field label{font-size:13px;color:var(--muted)}
+.field input,.field textarea,.field select{
+ width:100%;border:1px solid var(--line);outline:none;background:rgba(255,255,255,.035);color:var(--text);
+ padding:14px 15px;border-radius:15px;transition:.2s
+}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(77,255,136,.55);box-shadow:0 0 0 3px rgba(77,255,136,.08)}
+.primary{
+ border:0;color:#041009;background:var(--accent);font-weight:900;padding:14px 22px;border-radius:16px;
+ box-shadow:0 10px 35px rgba(77,255,136,.14);transition:.2s
+}
+.primary:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.secondary{border:1px solid var(--line);background:transparent;color:var(--text);padding:13px 18px;border-radius:15px}
+.auth-actions{display:grid;gap:10px;margin-top:14px}.hint{font-size:12px;color:var(--muted);line-height:1.7;margin-top:12px}
+.lang{position:fixed;top:84px;left:20px;z-index:35}
+.lang button{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:9px 12px;backdrop-filter:blur(14px)}
+.lang-menu{position:absolute;top:44px;left:0;background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:6px;min-width:130px;box-shadow:var(--shadow)}
+.lang-menu button{width:100%;border:0;background:transparent;border-radius:10px;justify-content:flex-start}
+.lang-menu button:hover{background:rgba(127,127,127,.10)}
+
+.welcome{max-width:1050px;margin:auto;text-align:center}
+.welcome .intro{max-width:750px;margin:0 auto 28px;color:var(--muted);line-height:1.9}
+.start{font-size:19px;min-width:190px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:45px;text-align:right}
+.feature{padding:22px;border:1px solid var(--line);background:var(--panel);border-radius:22px;backdrop-filter:blur(16px);transition:.25s}
+.feature:hover{transform:translateY(-5px);border-color:rgba(77,255,136,.3)}
+.num{font-size:28px;font-weight:950;color:var(--accent)}.feature h3{margin:8px 0}.feature p{color:var(--muted);line-height:1.75;font-size:14px}
+.creator{margin-top:38px;color:var(--muted);font-size:13px}
+.pixel{
+ width:130px;height:150px;margin:0 auto 18px;position:relative;filter:drop-shadow(0 12px 20px rgba(0,0,0,.4));
+ animation:pixelFloat 4s ease-in-out infinite
+}
+.pixel .hood{position:absolute;width:92px;height:86px;background:#15181d;border:5px solid #090a0c;left:19px;top:18px;border-radius:46% 46% 35% 35%}
+.pixel .hair{position:absolute;width:54px;height:35px;left:38px;top:5px;background:#e9d33f;clip-path:polygon(0 80%,15% 20%,34% 55%,55% 0,70% 58%,100% 25%,84% 100%,25% 100%)}
+.pixel .face{position:absolute;width:50px;height:48px;left:40px;top:47px;background:#d6a27b;clip-path:polygon(12% 0,88% 0,100% 28%,84% 100%,16% 100%,0 28%)}
+.pixel .red{position:absolute;width:46px;height:32px;left:42px;top:99px;background:#e33a3a;clip-path:polygon(50% 0,100% 24%,88% 100%,12% 100%,0 24%)}
+@keyframes pixelFloat{50%{transform:translateY(-8px) rotate(1deg)}}
+
+/* App */
+.shell{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px;max-width:1400px;margin:auto}
+.sidebar{position:sticky;top:84px;height:calc(100vh - 108px);padding:16px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(20px);border-radius:24px;display:flex;flex-direction:column;overflow:auto}
+.side-brand{display:flex;align-items:center;gap:10px;padding:8px 4px 18px}
+.nav{display:grid;gap:6px}.nav button{
+ border:1px solid transparent;background:transparent;color:var(--muted);padding:12px 13px;border-radius:14px;text-align:right;transition:.2s
+}.nav button:hover,.nav button.active{color:var(--text);background:rgba(127,127,127,.09);border-color:var(--line)}
+.nav button.active{box-shadow:inset -3px 0 var(--accent)}
+.side-bottom{margin-top:auto;padding-top:15px;border-top:1px solid var(--line);display:grid;gap:7px}
+.user-mini{display:flex;align-items:center;gap:10px;padding:10px;border-radius:16px;background:rgba(127,127,127,.06)}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#050608;border:1px solid var(--line);color:#fff;font-weight:900}
+.main{min-width:0}.panel{border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(22px);border-radius:24px;box-shadow:var(--shadow)}
+.chat{height:calc(100vh - 108px);display:flex;flex-direction:column;overflow:hidden}
+.chat-head{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mode{display:flex;align-items:center;gap:9px}.mode-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 18px var(--accent)}
+.chat-body{flex:1;overflow:auto;padding:28px clamp(14px,5vw,70px);scroll-behavior:smooth}
+.msg{display:flex;gap:10px;margin:18px 0;align-items:flex-start}.msg.user{flex-direction:row-reverse}
+.bubble{max-width:min(820px,88%);padding:15px 17px;border:1px solid var(--line);border-radius:20px;line-height:1.9;white-space:pre-wrap}
+.msg.ai .bubble{background:rgba(127,127,127,.055);border-top-right-radius:7px}.msg.user .bubble{background:rgba(77,255,136,.08);border-bottom-left-radius:7px}
+.msg-avatar{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#050608;border:1px solid var(--line);color:#fff;font-size:13px}
+.ai-tools{display:flex;gap:5px;margin-top:7px}.ai-tools button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 9px;border-radius:9px;font-size:12px}
+.composer{padding:12px;border-top:1px solid var(--line);background:rgba(0,0,0,.08)}
+.composer-box{display:flex;align-items:flex-end;gap:8px;border:1px solid var(--line);background:var(--panel2);border-radius:20px;padding:8px}
+.composer textarea{flex:1;min-height:46px;max-height:160px;resize:none;border:0;background:transparent;color:var(--text);outline:0;padding:11px 5px}
+.send{width:45px;height:45px;border-radius:14px;border:0;background:var(--accent);font-weight:900}
+.plus{width:45px;height:45px;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:14px;font-size:24px}
+.composer-meta{display:flex;gap:7px;flex-wrap:wrap;padding:7px 3px 0}.chip{border:1px solid var(--line);background:transparent;color:var(--muted);padding:7px 10px;border-radius:999px;font-size:12px}.chip.active{color:var(--text);border-color:rgba(77,255,136,.35);background:rgba(77,255,136,.07)}
+.tool-menu{position:relative}.popup{position:absolute;bottom:55px;right:0;background:var(--panel2);border:1px solid var(--line);padding:7px;border-radius:16px;box-shadow:var(--shadow);min-width:170px;z-index:10}.popup button{display:block;width:100%;border:0;background:transparent;color:var(--text);text-align:right;padding:10px;border-radius:10px}.popup button:hover{background:rgba(127,127,127,.1)}
+.empty{text-align:center;max-width:600px;margin:12vh auto}.empty h1{font-size:clamp(28px,5vw,48px);margin-bottom:10px}.empty p{color:var(--muted);line-height:1.8}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px}.tool-card{padding:20px;border:1px solid var(--line);border-radius:22px;background:rgba(127,127,127,.045);transition:.2s}.tool-card:hover{transform:translateY(-4px);border-color:rgba(77,255,136,.3)}.tool-card .emoji{font-size:30px}.tool-card h3{margin:10px 0 6px}.tool-card p{color:var(--muted);font-size:13px;line-height:1.7}
+.page-title{padding:24px 24px 8px}.page-title h1{margin:0}.page-title p{color:var(--muted)}
+.setting-list{padding:0 18px 18px}.setting{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:17px 4px;border-bottom:1px solid var(--line)}.setting:last-child{border:0}.setting small{display:block;color:var(--muted);margin-top:4px}.switch{width:48px;height:28px;border-radius:99px;border:1px solid var(--line);background:#343941;padding:3px}.switch i{display:block;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s}.switch.on{background:var(--accent)}.switch.on i{transform:translateX(-20px)}
+.drawer{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);display:none}.drawer.open{display:block}.drawer-card{position:absolute;right:0;top:0;bottom:0;width:min(330px,88vw);background:var(--panel2);border-left:1px solid var(--line);padding:18px;overflow:auto;animation:slideIn .25s ease}@keyframes slideIn{from{transform:translateX(100%)}to{transform:none}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;z-index:100;padding:11px 16px;border:1px solid var(--line);background:var(--panel2);border-radius:14px;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%)}
+.shatter{position:fixed;inset:0;z-index:200;pointer-events:none;overflow:hidden}.shard{position:absolute;width:180px;height:140px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(2px);clip-path:polygon(0 0,100% 13%,80% 100%,15% 78%);animation:fall .72s cubic-bezier(.2,.8,.2,1) forwards}@keyframes fall{to{transform:translate(var(--x),110vh) rotate(var(--r));opacity:0}}
+.reveal{animation:rise .55s cubic-bezier(.2,.8,.2,1)}@keyframes rise{from{opacity:0;transform:translateY(70px)}to{opacity:1;transform:none}}
+.walker{position:fixed;bottom:85px;left:-80px;z-index:25;pointer-events:none;animation:walk 15s linear infinite;display:none}.walker .pixel{transform:scale(.55);transform-origin:bottom left;margin:0}@keyframes walk{0%{left:-90px}48%{left:65%}50%{left:68%;transform:scaleX(-1)}98%{left:-90px;transform:scaleX(-1)}100%{left:-90px;transform:none}}
+@media (min-width:901px){.walker{display:block}}
+@media (max-width:900px){
+ .topbar{height:60px;padding:0 12px}.view{padding:78px 12px 22px}.shell{display:block}.sidebar{display:none}.chat{height:calc(100vh - 82px);border-radius:20px}.features,.cards{grid-template-columns:1fr}.big-logo{width:90px;height:90px}.big-logo:after{width:46px;height:36px}.title{font-size:48px}.auth-box{padding:16px}.lang{top:70px;left:12px}.chat-body{padding:18px 12px}.bubble{max-width:92%}.msg-avatar{width:32px;height:32px}.chat-head{padding:11px 12px}.walker{display:block;bottom:100px;transform:scale(.8)}}
+@media (max-width:420px){.top-actions .optional{display:none}.composer-meta{overflow:auto;flex-wrap:nowrap}.title{font-size:42px}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="bg"></div><div class="grid"></div><div class="glow g1"></div><div class="glow g2"></div>
+<header class="topbar">
+  <div class="brand-mini"><div class="logo"></div><div class="brand-name"><b>T-REX AI</b><small>تیرکس AI</small></div></div>
+  <div class="top-actions" id="topActions"></div>
+</header>
+
+<div id="lang" class="lang">
+ <button onclick="toggleLangMenu()">🌐 <span id="langLabel">فارسی</span></button>
+ <div id="langMenu" class="lang-menu hidden">
+  <button onclick="setLang('fa')">🇮🇷 فارسی</button>
+  <button onclick="setLang('en')">🇺🇸 English</button>
+ </div>
+</div>
+
+<main id="root"></main>
+
+<div class="drawer" id="drawer" onclick="if(event.target===this)closeDrawer()">
+ <div class="drawer-card">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2 id="drawerTitle">منو</h2><button class="icon-btn" onclick="closeDrawer()">×</button></div>
+  <div id="drawerContent"></div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="walker"><div class="pixel"><div class="hair"></div><div class="hood"></div><div class="face"></div><div class="red"></div></div></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const state={
+ lang:localStorage.getItem('trex_lang')||'fa',
+ theme:localStorage.getItem('trex_theme')||'dark',
+ user:JSON.parse(localStorage.getItem('trex_user')||'null'),
+ view:'auth', chatMode:'✨ بهترین حالت', style:'Friendly',
+ chats:JSON.parse(localStorage.getItem('trex_chats')||'[]')
+};
+const t={
+ fa:{login:'ورود',signup:'ساخت حساب',id:'نام کاربری',pass:'رمز عبور',start:'شروع →',welcome:'به T-REX AI خوش آمدی',
+ intro:'یک مرکز شخصی برای گفت‌وگو، برنامه‌نویسی، تصویر، درس، ایده‌پردازی، ساخت بات و ابزارهای هوش مصنوعی.',
+ features:[
+ ['01','همه‌کاره','در حالت بهترین، تیرکس نوع درخواست را تشخیص می‌دهد و مسیر مناسب را انتخاب می‌کند.'],
+ ['02','چندتوانه','قابلیت‌های مختلف پشت یک محیط واحد قرار می‌گیرند تا لازم نباشد دنبال مدل مناسب بگردی.'],
+ ['03','شخصی و سریع','چت‌ها، تنظیمات و حافظه حساب در یک محیط مرتب نگهداری می‌شوند.'],
+ ],
+ chat:'گفت‌وگو', search:'جستجو', history:'تاریخچه', customize:'شخصی‌سازی', settings:'تنظیمات', memory:'حافظه',
+ placeholder:'پیامت را بنویس...', best:'✨ بهترین حالت', general:'💬 گفت‌وگوی عمومی', coding:'💻 برنامه‌نویسی', image:'🎨 تولید تصویر', bot:'🤖 ساخت بات و AI', school:'📚 درس', web:'🔎 جستجوی وب', ideas:'💡 ایده‌پردازی', files:'📄 تحلیل فایل', writing:'✍️ نویسندگی',
+ hello:'سلام! من T-REX AI هستم 🦖\\nاینجا می‌توانی سؤال بپرسی، کد بسازی، درباره درس‌های ایران کمک بگیری، ایده بگیری، فایل و تصویر بفرستی و برای کارهای مختلف از حالت مناسب استفاده کنی.\\n\\nبرای شروع، حالت موردنظرت را انتخاب کن یا روی «بهترین حالت» بگذار تا خودم مسیر مناسب را انتخاب کنم.',
+ created:'Created by Bardia Z', profile:'پروفایل', logout:'خروج', theme:'تم', dark:'تیره', light:'روشن', language:'زبان', animations:'انیمیشن‌ها', send:'ارسال', copy:'کپی', read:'بلندخوانی', attach:'افزودن', save:'ذخیره'
+ },
+ en:{login:'Login',signup:'Create account',id:'Username',pass:'Password',start:'Start →',welcome:'Welcome to T-REX AI',
+ intro:'A personal AI hub for chat, coding, images, school, ideas, bot building and more.',
+ features:[['01','All-in-one','In Best mode, T-Rex detects the request and chooses the right route.'],['02','Multi-capability','Different capabilities live behind one clean interface.'],['03','Personal & fast','Chats, settings and memory stay organized in your account.']],
+ chat:'Chat',search:'Search',history:'History',customize:'Personalize',settings:'Settings',memory:'Memory',
+ placeholder:'Write a message...',best:'✨ Best mode',general:'💬 General chat',coding:'💻 Coding',image:'🎨 Image generation',bot:'🤖 Bot & AI building',school:'📚 School',web:'🔎 Web search',ideas:'💡 Ideas',files:'📄 File analysis',writing:'✍️ Writing',
+ hello:'Hi! I’m T-REX AI 🦖\\nThis is your personal AI hub. Ask questions, write code, work with school topics, brainstorm, attach files/images and use the best capability for each task.\\n\\nChoose a mode or leave it on Best mode and I’ll route the request.',
+ created:'Created by Bardia Z',profile:'Profile',logout:'Log out',theme:'Theme',dark:'Dark',light:'Light',language:'Language',animations:'Animations',send:'Send',copy:'Copy',read:'Read aloud',attach:'Add',save:'Save'}
+};
+function L(){return t[state.lang]}
+function save(){localStorage.setItem('trex_lang',state.lang);localStorage.setItem('trex_theme',state.theme);if(state.user)localStorage.setItem('trex_user',JSON.stringify(state.user));localStorage.setItem('trex_chats',JSON.stringify(state.chats))}
+document.documentElement.dataset.theme=state.theme;
+function toast(x){const e=$('#toast');e.textContent=x;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
+function setLang(x){state.lang=x;save();$('#langLabel').textContent=x==='fa'?'فارسی':'English';$('#langMenu').classList.add('hidden');render()}
+function toggleLangMenu(){$('#langMenu').classList.toggle('hidden')}
+function shatter(cb){
+ const box=document.createElement('div');box.className='shatter';document.body.appendChild(box);
+ for(let i=0;i<15;i++){let s=document.createElement('i');s.className='shard';s.style.left=(Math.random()*100)+'%';s.style.top=(Math.random()*35)+'%';s.style.setProperty('--x',(Math.random()*260-130)+'px');s.style.setProperty('--r',(Math.random()*140-70)+'deg');s.style.animationDelay=(Math.random()*.12)+'s';box.appendChild(s)}
+ setTimeout(()=>{box.remove();cb()},430)
+}
+function renderTop(){
+ $('#topActions').innerHTML=state.view==='app'?`<button class="icon-btn" onclick="openDrawer('profile')">👤</button>`:'';
+ $('#langLabel').textContent=state.lang==='fa'?'فارسی':'English';
+}
+function auth(){
+ const l=L();
+ $('#root').innerHTML=`<section class="view hero"><div class="hero-card">
+  <div class="logo big-logo"></div><h1 class="title">T-REX AI</h1><div class="subtitle">تیرکس AI</div>
+  <div class="auth-box">
+   <form onsubmit="event.preventDefault();doAuth(false)">
+    <div class="field"><label>${l.id}</label><input id="uid" autocomplete="username" required></div>
+    <div class="field"><label>${l.pass}</label><input id="pwd" type="password" autocomplete="current-password" required></div>
+    <div class="auth-actions"><button class="primary" type="submit">${l.login}</button><button class="secondary" type="button" onclick="doAuth(true)">${l.signup}</button></div>
+   </form>
+   <div class="hint">${state.lang==='fa'?'این نسخه رابط و منطق اولیه را بدون سرویس خارجی اجرا می‌کند. برای نسخه آنلاین AI، Backend امن در مرحله بعد اضافه می‌شود.':'This build runs the UI and local logic without external services. A secure backend for real AI providers comes next.'}</div>
+  </div>
+ </div></section>`;
+ renderTop()
+}
+function doAuth(signup){
+ const id=$('#uid').value.trim(),pw=$('#pwd').value;
+ if(!id||!pw)return;
+ const key='trex_account_'+id;
+ const old=JSON.parse(localStorage.getItem(key)||'null');
+ if(signup){
+  if(old){toast(state.lang==='fa'?'این نام کاربری قبلاً وجود دارد':'Username already exists');return}
+  localStorage.setItem(key,JSON.stringify({id,pw,name:id,avatar:''}));
+  state.user={id,name:id}; save(); transitionToWelcome();
+ }else{
+  if(!old||old.pw!==pw){toast(state.lang==='fa'?'نام کاربری یا رمز عبور اشتباه است':'Invalid username or password');return}
+  state.user={id,name:old.name||id,avatar:old.avatar||''};save();transitionToWelcome()
+ }
+}
+function transitionToWelcome(){shatter(()=>{state.view='welcome';render()})}
+function welcome(){
+ const l=L();
+ $('#root').innerHTML=`<section class="view reveal"><div class="welcome">
+  <div class="pixel"><div class="hair"></div><div class="hood"></div><div class="face"></div><div class="red"></div></div>
+  <div class="logo big-logo"></div><h1 class="title" style="font-size:clamp(38px,7vw,70px)">T-REX AI</h1><div class="subtitle">تیرکس AI</div>
+  <p class="intro">${l.intro}</p>
+  <button class="primary start" onclick="startApp()">${l.start}</button>
+  <div class="features">${l.features.map(x=>`<article class="feature"><div class="num">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p></article>`).join('')}</div>
+  <div class="creator">${l.created}</div>
+ </div></section>`;
+ renderTop()
+}
+function startApp(){shatter(()=>{state.view='app';render()})}
+const modes=()=>{const l=L();return [
+ [l.best,'auto'],[l.general,'general'],[l.coding,'coding'],[l.image,'image'],[l.bot,'bot'],[l.school,'school'],[l.web,'web'],[l.ideas,'ideas'],[l.files,'files'],[l.writing,'writing']
+]}
+function sidebar(){
+ const l=L();
+ return `<aside class="sidebar">
+  <div class="side-brand"><div class="logo"></div><div class="brand-name"><b>T-REX AI</b><small>${state.user?.name||''}</small></div></div>
+  <div class="nav">
+   <button class="active" onclick="setPage('chat')">💬 ${l.chat}</button>
+   <button onclick="setPage('tools')">🧩 ${state.lang==='fa'?'قابلیت‌ها':'Capabilities'}</button>
+   <button onclick="openDrawer('history')">🕘 ${l.history}</button>
+   <button onclick="openDrawer('search')">🔍 ${l.search}</button>
+   <button onclick="openDrawer('customize')">🎨 ${l.customize}</button>
+   <button onclick="openDrawer('memory')">🧠 ${l.memory}</button>
+   <button onclick="openDrawer('settings')">⚙️ ${l.settings}</button>
+  </div>
+  <div class="side-bottom"><div class="user-mini"><div class="avatar">${(state.user?.name||'T')[0].toUpperCase()}</div><div><b>${state.user?.name||'User'}</b><small style="display:block;color:var(--muted)">${state.user?.id||''}</small></div></div><button class="secondary" onclick="logout()">${l.logout}</button></div>
+ </aside>`
+}
+function appShell(content){$('#root').innerHTML=`<section class="view"><div class="shell">${sidebar()}<main class="main">${content}</main></div></section>`;renderTop()}
+function chatPage(){
+ const l=L();
+ let history=state.chats[0]?.messages||[{role:'ai',text:l.hello}];
+ const msgs=history.map((m,i)=>messageHTML(m,i)).join('');
+ appShell(`<div class="panel chat">
+ <div class="chat-head"><button class="icon-btn" onclick="openDrawer('menu')">☰</button><div class="mode"><span class="mode-dot"></span><b>${state.chatMode}</b></div><button class="icon-btn" onclick="newChat()">＋</button></div>
+ <div class="chat-body" id="chatBody">${msgs}</div>
+ <div class="composer">
+  <div class="composer-box"><div class="tool-menu"><button class="plus" onclick="togglePopup()">+</button><div class="popup hidden" id="attachPopup"><button onclick="fakeAttach('image')">📷 ${l.lang==='fa'?'عکس':'Image'}</button><button onclick="fakeAttach('file')">📁 ${l.lang==='fa'?'فایل':'File'}</button></div></div>
+   <textarea id="prompt" placeholder="${l.placeholder}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea><button class="send" onclick="sendMessage()">➤</button>
+  </div>
+  <div class="composer-meta">${modes().slice(0,5).map((m,i)=>`<button class="chip ${state.chatMode===m[0]?'active':''}" onclick="setMode('${m[0]}')">${m[0]}</button>`).join('')}<button class="chip" onclick="openDrawer('modes')">＋ ${state.lang==='fa'?'همه قابلیت‌ها':'All modes'}</button></div>
+ </div></div>`);
+ setTimeout(()=>{$('#chatBody').scrollTop=$('#chatBody').scrollHeight},30)
+}
+function messageHTML(m,i){
+ const ai=m.role==='ai';
+ return `<div class="msg ${ai?'ai':'user'}"><div class="msg-avatar">${ai?'🦖':((state.user?.name||'U')[0].toUpperCase())}</div><div><div class="bubble">${escapeHTML(m.text)}</div>${ai?`<div class="ai-tools"><button onclick="copyText(${i})">⧉ ${L().copy}</button><button onclick="speakText(${i})">🔊 ${L().read}</button></div>`:''}</div></div>`
+}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function ensureChat(){if(!state.chats.length)state.chats=[{id:Date.now(),title:'New chat',messages:[{role:'ai',text:L().hello}]}]}
+function sendMessage(){
+ const e=$('#prompt');const text=e?.value.trim();if(!text)return;
+ ensureChat();let c=state.chats[0];c.messages.push({role:'user',text});c.title=text.slice(0,34);e.value='';save();chatPage();
+ const body=$('#chatBody');const thinking=document.createElement('div');thinking.className='msg ai';thinking.innerHTML=`<div class="msg-avatar">🦖</div><div class="bubble"><span style="opacity:.7">● ● ●</span></div>`;body.appendChild(thinking);body.scrollTop=body.scrollHeight;
+ setTimeout(()=>{thinking.remove();const reply=localReply(text);c.messages.push({role:'ai',text:reply});save();chatPage();},500+Math.min(text.length*12,700))
+}
+function localReply(q){
+ const l=L();
+ if(/html|css|javascript|python|کد|برنامه/.test(q.toLowerCase())) return state.lang==='fa'
+ ? 'در حالت برنامه‌نویسی، T-Rex درخواست را برای مسیر کدنویسی آماده می‌کند.\\n\\nنسخه فعلی که روی GitHub Pages قرار می‌گیرد، رابط و منطق سمت مرورگر را دارد؛ اتصال واقعی به مدل‌های AI باید از طریق یک Backend امن انجام شود تا کلیدهای API لو نروند.'
+ : 'In Coding mode, T-Rex routes the request to the coding pipeline.\\n\\nThis GitHub Pages build contains the client UI; real provider connections should go through a secure backend so API keys are never exposed.';
+ return state.lang==='fa'
+ ? `پیامت دریافت شد: «${q}»\\n\\nاین نسخه، پوسته و تجربه کاربری T-Rex AI را آماده کرده است. برای پاسخ واقعی از مدل‌های آنلاین، مرحله بعد اتصال Backend و Providerهای قانونی/رایگان یا Free-tier است.`
+ : `I received: “${q}”\\n\\nThis build provides the T-Rex AI shell and UX. Real online model responses require the next backend/provider integration step.`;
+}
+function setMode(x){state.chatMode=x;chatPage()}
+function togglePopup(){$('#attachPopup').classList.toggle('hidden')}
+function fakeAttach(type){$('#attachPopup').classList.add('hidden');toast(state.lang==='fa'?(type==='image'?'انتخاب تصویر در نسخه Backend فعال می‌شود.':'انتخاب فایل در نسخه Backend فعال می‌شود.'):(type==='image'?'Image upload will be connected in the backend step.':'File upload will be connected in the backend step.'))}
+function copyText(i){const m=state.chats[0]?.messages[i];if(m)navigator.clipboard?.writeText(m.text).then(()=>toast(L().copy))}
+function speakText(i){const m=state.chats[0]?.messages[i];if(m&&speechSynthesis){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(m.text))}}
+function newChat(){state.chats.unshift({id:Date.now(),title:L().lang==='fa'?'گفتگوی جدید':'New chat',messages:[{role:'ai',text:L().hello}]});save();chatPage()}
+function setPage(p){if(p==='tools')toolsPage();else chatPage()}
+function toolsPage(){
+ const l=L();const ms=modes().slice(1);
+ appShell(`<div class="panel"><div class="page-title"><h1>🧩 ${state.lang==='fa'?'قابلیت‌ها':'Capabilities'}</h1><p>${state.lang==='fa'?'هر بخش مسیر تخصصی خودش را دارد؛ مدل‌های پشت صحنه بعداً به آن متصل می‌شوند.':'Each section has its own route; providers are connected in the backend step.'}</p></div><div class="cards">${ms.map(m=>`<article class="tool-card" onclick="setMode('${m[0]}');setPage('chat')"><div class="emoji">${m[0].slice(0,2)}</div><h3>${m[0]}</h3><p>${modeDesc(m[1])}</p></article>`).join('')}</div></div>`)
+}
+function modeDesc(x){const fa=state.lang==='fa';return ({general:fa?'گفت‌وگوی روزمره و سؤال‌های عمومی.':'Everyday chat and general questions.',coding:fa?'ساخت و بررسی کد و پروژه.':'Code and project assistance.',image:fa?'تولید و ویرایش تصویر.':'Image generation and editing.',bot:fa?'کمک برای ساخت بات و AI.':'Bot and AI building.',school:fa?'کمک درسی و آموزشی.':'School and learning help.',web:fa?'جستجوی اطلاعات تازه در وب.':'Fresh web research.',ideas:fa?'ایده‌پردازی و طراحی راه‌حل.':'Brainstorming and solution design.',files:fa?'تحلیل فایل و اسناد.':'File and document analysis.',writing:fa?'نویسندگی، بازنویسی و ساخت متن.':'Writing and rewriting.'})[x]||''}
+function openDrawer(type){
+ const l=L();let title='',html='';
+ if(type==='menu'){title='T-REX AI';html=`<div class="nav" style="margin-top:18px">${['💬 '+l.chat,'🕘 '+l.history,'🔍 '+l.search,'🎨 '+l.customize,'🧠 '+l.memory,'⚙️ '+l.settings].map((x,i)=>`<button onclick="openDrawer('${['chat','history','search','customize','memory','settings'][i]}')">${x}</button>`).join('')}</div>`}
+ if(type==='history'){title=l.history;html=state.chats.length?state.chats.map((c,i)=>`<button class="secondary" style="width:100%;margin:5px 0;text-align:right" onclick="loadChat(${i})">💬 ${escapeHTML(c.title)}</button>`).join(''):`<p style="color:var(--muted)">${state.lang==='fa'?'هنوز گفتگویی ذخیره نشده.':'No saved chats yet.'}</p>`}
+ if(type==='search'){title='🔍 '+l.search;html=`<div class="field"><label>${state.lang==='fa'?'جستجو در تمام گفتگوها':'Search all chats'}</label><input id="searchAll" oninput="searchChats()" placeholder="${state.lang==='fa'?'مثلاً عکس، Python...':'e.g. image, Python...'}"></div><div id="searchResults"></div>`}
+ if(type==='customize'){title='🎨 '+l.customize;html=`<div class="setting"><div><b>${state.lang==='fa'?'حالت صحبت':'Personality'}</b><small>${state.lang==='fa'?'انتخاب لحن پاسخ‌ها':'Response tone'}</small></div><select onchange="state.style=this.value;save()" style="max-width:150px"><option>Friendly</option><option>Normal</option><option>Professional</option><option>Teacher</option><option>Creative</option><option>Technical</option></select></div><div class="setting"><div><b>${l.theme}</b><small>${state.theme==='dark'?l.dark:l.light}</small></div><button class="secondary" onclick="toggleTheme()">${state.theme==='dark'?'☀️':'🌙'}</button></div>`}
+ if(type==='memory'){title='🧠 '+l.memory;html=`<div class="setting"><div><b>${state.lang==='fa'?'حافظه حساب':'Account memory'}</b><small>${state.lang==='fa'?'حافظه واقعی دائمی در Backend امن مرحله بعد اضافه می‌شود.':'Persistent secure memory is connected in the backend step.'}</small></div><button class="switch on"><i></i></button></div>`}
+ if(type==='settings'){title='⚙️ '+l.settings;html=`<div class="setting"><div><b>${l.language}</b><small>${state.lang==='fa'?'فارسی':'English'}</small></div><button class="secondary" onclick="setLang(state.lang==='fa'?'en':'fa');openDrawer('settings')">🌐</button></div><div class="setting"><div><b>${l.theme}</b><small>${state.theme==='dark'?l.dark:l.light}</small></div><button class="secondary" onclick="toggleTheme()">◐</button></div><div class="setting"><div><b>${l.animations}</b><small>${state.lang==='fa'?'افکت‌ها برای حس سینمایی':'Cinematic transitions'}</small></div><button class="switch on"><i></i></button></div><div style="margin-top:18px"><button class="secondary" style="width:100%" onclick="logout()">${l.logout}</button></div>`}
+ if(type==='profile'){title='👤 '+l.profile;html=`<div class="field"><label>${l.id}</label><input id="profileName" value="${escapeHTML(state.user?.name||'')}"></div><button class="primary" style="width:100%" onclick="saveProfile()">${l.save}</button>`}
+ if(type==='modes'){title=state.lang==='fa'?'همه قابلیت‌ها':'All capabilities';html=`<div class="nav">${modes().map(m=>`<button onclick="setMode('${m[0]}');closeDrawer()">${m[0]}</button>`).join('')}</div>`}
+ if(type==='chat'){closeDrawer();chatPage();return}
+ $('#drawerTitle').textContent=title;$('#drawerContent').innerHTML=html;$('#drawer').classList.add('open')
+}
+function closeDrawer(){$('#drawer').classList.remove('open')}
+function searchChats(){const q=$('#searchAll').value.trim().toLowerCase(),r=$('#searchResults');if(!q){r.innerHTML='';return}let out=[];state.chats.forEach((c,ci)=>c.messages.forEach(m=>{if(m.text.toLowerCase().includes(q))out.push(`<div class="feature" style="margin:7px 0"><b>${escapeHTML(c.title)}</b><p>${escapeHTML(m.text.slice(0,160))}</p></div>`)}));r.innerHTML=out.join('')||`<p style="color:var(--muted)">${state.lang==='fa'?'چیزی پیدا نشد.':'No results.'}</p>`}
+function loadChat(i){const c=state.chats.splice(i,1)[0];state.chats.unshift(c);save();closeDrawer();chatPage()}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=state.theme;save();if($('#drawer').classList.contains('open'))openDrawer('settings')}
+function saveProfile(){const n=$('#profileName').value.trim()||state.user.id;state.user.name=n;const key='trex_account_'+state.user.id;const old=JSON.parse(localStorage.getItem(key)||'{}');old.name=n;localStorage.setItem(key,JSON.stringify(old));save();toast(L().save);openDrawer('profile')}
+function logout(){state.user=null;state.view='auth';save();closeDrawer();shatter(()=>render())}
+function render(){renderTop();if(!state.user)auth();else if(state.view==='welcome')welcome();else if(state.view==='app')chatPage()}
+render();
+</script>
+</body>
+</html>
